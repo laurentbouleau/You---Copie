@@ -1,0 +1,56 @@
+    if (affichage_titre_actif)
+    {
+        std::wstring titres_str;
+        std::wstring annees_str;
+        std::wstring sur_str;
+        std::wstring sj_str;
+        std::wstring temps_str;
+        std::wstring note_str;
+
+        titres_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
+        if (titre.size() > 1)
+            titres_str += keyColor[1] + titre[1] + valuesColor + titre[2];
+        // Année(s)
+        if (affichage_annees_actif)
+        {
+            //annees_str = format_Annees();
+            wchar_t date_string[22];
+            wcsftime(date_string, 15, L"%Y", &Date_Diffusee_a_partir_de[0]);
+            std::wstring wstr = date_string;
+            annees_str = keyColor[0] + L" (" + valuesColor + wstr + keyColor[0] + L')' + valuesColor;
+        }
+        // sur
+        if (affichage_sur_actif && sur != L"")
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1];// + L"sur " + valuesColor + sur;// +keyColor[1] + L" : " + valuesColor;
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && disney_sj.length() != 0)
+                sur_str += disney_sj;
+            // Netflix SJ
+            else if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
+                sur_str += netflix_sj;
+            sur_str += keyColor[0] + L')' + valuesColor;
+        }
+        else
+        {
+            //sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur;// +keyColor[1] + L" : " + valuesColor;
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && disney_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + disney_sj + keyColor[0] + L')' + valuesColor;
+            // Netflix SJ
+            else if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + netflix_sj + keyColor[0] + L')' + valuesColor;
+            else
+                sur_str += keyColor[0] + L" (" + valuesColor + sur + keyColor[0] + L')' + valuesColor;
+        }
+        // La signalétique jeunesse
+        if (affichage_sj_actif && sj.length() != 0)
+            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + sj + keyColor[0] + L')' + valuesColor;
+        if (affichage_temps_actif)
+            temps_str += L' ' + afficher_OK_Temps(Temps, keyColor[0], valuesColor);
+        // Note
+        if (affichage_note_actif)
+            //note_str += calcul_Note_Affichage();
+            note_str += afficher_OK_Note();
+        std::wcout << titres_str << annees_str << sur_str << sj_str << temps_str << note_str << std::endl;
+    }
