@@ -117,7 +117,7 @@ private:
 	const void PrintNote(int, int);
 	const void PrintTitre();
 
-	const void Print_Header();
+	const void PrintHeader();
 
 	std::wstring Ok = L"";
 	std::wstring Titre__;// = L"";
@@ -177,7 +177,6 @@ private:
 
 	bool en_relation_avec_ = true;//false;
 	//bool Note_ = true;// false;
-	bool Date_Diffusee_a_partir_de_[_X2_] = { true };
 	bool X_ = false;
 
 	std::wstring Titre_1 = L"";
@@ -185,6 +184,7 @@ private:
 
 	std::tm Date_X[_X2_][_X_ * 4][_x_] = { 0 };
 	std::tm Date_Diffusee_a_partir_de[_X2_] = { 0 };
+	bool Date_Diffusee_a_partir_de_[_X2_] = { true };
 
 	std::wstring D[_X2_] = { L"" };
 	std::wstring D_Titre[_X2_] = { L"" };
@@ -193,6 +193,7 @@ private:
 	//wstring D_s[_X2_][_X_ * 4] = { L"" };
 	//std::vector<std::wstring> D_Avec[_X2_];
 	//std::vector<std::wstring> D_Avec_role[_X2_];// = { L"" };
+	std::wstring d_audiodescription[_X2_] = { L"" };
 	std::vector<std::pair<std::wstring, std::wstring>> avec[_X2_];
 	std::wstring d_chaine[_X2_] = { L"" };
 	std::vector<std::wstring> d_image[_X2_];
@@ -200,6 +201,7 @@ private:
 	
 	int D_I = { 0 };
 	int D_J[_X2_] = { 0 };
+bool D_J_[_X2_] = { false }; // D_J == D_J_[_X2_]
 	int D_K[_X2_][_X_ * 4] = { -1 };
 	//wchar_t D_K_[_X2_][_X_ * 4] = { L' ' };
 	bool D_K_[_X2_][_X_ * 4] = { false };

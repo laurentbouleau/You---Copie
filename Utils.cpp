@@ -474,7 +474,7 @@ const void afficher_Avec(std::wstring& a_filename, const std::wstring& nomFichie
 // ######################################################################################################################################################
 
 const void afficher_Disney_SJ(std::wstring& d, std::wstring const& nomFichier, std::wstring& d_sj)
-{ // Netflix SJ : Catégorie d'âge
+{ // Disney+ SJ : Catégorie d'âge
     assert((d == createdBy_filename) && L"Erreur !!! Disney+ SJ... !");
     d = lire_fichierTxt(nomFichier);
     try
@@ -2211,18 +2211,18 @@ std::tm ParseDate(std::wstring& str)
 // #                                                                                                                                                    #
 // # Printaudiodescription                                                                                                                              #
 // # const void Printaudiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif,                                      #
-// #                                  std::wstring& keyColor, std::wstring& valuesColor)                                                                #
+// #                                  std::wstring& keyColor, std::wstring& valuesColor, int x)                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-void PrintAudiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor)
+void PrintAudiodescription(const std::wstring& audiodescription, bool affichage_audiodescription_actif, std::wstring& keyColor, std::wstring& valuesColor, int x)
 {
     if (affichage_audiodescription_actif && audiodescription.size() > 0)
     {
         std::wstring audiodescription_str = keyColor + L"Audiodescription : " + valuesColor + audiodescription + L"\r\n";
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
-        int i = Console_Lire_txt(audiodescription_str, 0, 0);
+        int i = Console_Lire_txt(audiodescription_str, x, x);
     }
 }
 

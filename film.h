@@ -83,7 +83,7 @@ private:
 	const void PrintTitre();
 	const void PrintTitre_sur_4();
 
-	const void Print_Header();
+	const void PrintHeader();
 	
 	std::wstring Titre__;
 

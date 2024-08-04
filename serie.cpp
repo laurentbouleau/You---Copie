@@ -39,12 +39,13 @@ extern class Bug B;
 //extern int Titre::afficher_AD(std::wstring& a, std::wstring& ad, std::wstring const& nomFichier);
 
 //extern const int afficher_Avec(std::wstring&, std::wstring const&, std::vector<std::wstring>&, std::vector<std::wstring>&);
-extern const void afficher_Avec(std::wstring& a_filename, const std::wstring& nomFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
-
 extern const void afficher_Audiodescription(std::wstring& a, std::wstring const& nomFichier, std::wstring& audiodescription);
+extern const void afficher_Avec(std::wstring& a_filename, const std::wstring& nomFichier, std::vector<std::pair<std::wstring, std::wstring>>& avec);
+extern const void afficher_Disney_SJ(std::wstring& d, std::wstring const& nomFichier, std::wstring& d_sj);
 extern const void afficher_Genre(std::wstring&, std::wstring const&, std::vector<std::wstring>&, const std::vector<std::wstring>&);
 extern const void afficher_Image(const std::wstring& nomFichier, std::vector<std::wstring>& images);
 extern const void afficher_Nationalite(std::wstring&, std::wstring const&, std::vector<std::wstring>&, const std::vector<std::wstring>&);
+extern const void afficher_Netflix_SJ(std::wstring& d, std::wstring const& nomFichier, std::wstring& d_sj);
 
 extern const void afficher_SJ(std::wstring&, const std::wstring&, std::wstring&);
 extern const int afficher_T123(std::wstring t, std::wstring& t1, std::wstring& t2, std::wstring& t3);
@@ -65,7 +66,7 @@ extern const void Console_Lire(std::wstring, int, int);
 
 extern std::wstring replace_all(std::wstring subject, const std::wstring& search, const std::wstring& replace);
 
-extern void PrintAudiodescription(const std::wstring& ad, bool ad_, std::wstring& titre_T, std::wstring& titre_t);
+extern void PrintAudiodescription(const std::wstring& ad, bool ad_, std::wstring& titre_T, std::wstring& titre_t, int x);
 extern void PrintGenres(const std::vector<std::wstring>& genres, bool genre_, const std::wstring& sous_genre, bool sous_genre_, std::wstring& titre_T, std::wstring& titre_t);
 extern void PrintImages(const std::vector<std::wstring>& images, bool image_, std::wstring& titre_T, std::wstring& titre_t, int x1, int y1, int x2, int y2);
 extern void PrintNationalites(const std::vector<std::wstring>& nationalites, bool nationalite_, std::wstring& titre_T, std::wstring& titre_t);
@@ -217,7 +218,7 @@ const int Serie::afficher_dossier(std::wstring const& t)
             //wcout << L"    " << L"Date_Diffusee_a_partir_de_[" << Date_Diffusee_a_partir_de_[D_I] << L"] = érreur !!!" << endl;
             B.Ok_W(L"Date_Diffusee_a_partir_de_[" + to_wstring(Date_Diffusee_a_partir_de_[D_I]) + L"} = erreur !!!");
 #endif
-            E.afficher_X(-1, t2, t + L" erreur !!!");
+            E.afficher_X(-1, t2, t + L" erreur XXXX-YY-ZZ !!!");
             return EXIT_FAILURE;
         }
         //D_J[_X2_]
@@ -541,9 +542,18 @@ const int Serie::afficher_fichier(int I, std::wstring const& nomFichier, int con
     std::wstring filename = t;
     t = t.substr(0, pos - 4);
     pos = pos - 4;
-    //wcout << L"bbbbbbb [" << t << L']' << endl;
     if (!(std::isdigit(t[0])))
     {
+        // AD
+        if (filename == L"AD.txt")
+        {
+            afficher_Audiodescription(t, nomFichier, d_audiodescription[I]);
+#if Serie_afficher_fichier_ == 1
+            B.Ok_W(L"AD={" + audiodescription + L"}");
+            B.Ok_T(L"const int Serie::afficher_fichier() : Ok !");
+#endif
+            return EXIT_SUCCESS;
+        }
         // Avec
         if (filename == L"Avec.txt")
         {
@@ -742,6 +752,8 @@ const int Serie::afficher_fichier(int I, std::wstring const& nomFichier, int con
                 return EXIT_FAILURE;
             }
         }
+//        D_J_[I] = true;
+
     }
     // Image
     if (t != L"" && filename != L"")
@@ -2022,13 +2034,13 @@ const int Serie::afficher()
     // Titre
     //PrintTitre();
     // Header
-    Print_Header();
+    PrintHeader();
     // Titre original
     PrintTitreOriginal(titre_original, affichage_titre_original_actif, keyColor[0], valuesColor, keyColor[1], valuesColor);
     // Chaîne
     PrintChaine(chaine);
     // Audiodescription
-    PrintAudiodescription(audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+    PrintAudiodescription(audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor, 0);
     // Genre
 //PrintGenres(genres, affichage_genres_actif, sous_genres, affichage_sous_genre_actif, keyColor, valuesColor)
     PrintGenres(genre, affichage_genres_actif, sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
@@ -2322,6 +2334,8 @@ const int Serie::afficher()
         PrintNote(I, x);
         // Image
         PrintImages(d_image[I], d_affichage_image_actif, keyColor[1], valuesColor, 4, 0, 8, 1);
+        // Audiodescription
+        PrintAudiodescription(d_audiodescription[I], affichage_audiodescription_actif, keyColor[1], valuesColor, x);
         // Avec
         PrintAvec(avec[I]);
         // Chaîne
@@ -2698,6 +2712,85 @@ const void Serie::PrintEn_relation_avec(const std::vector<std::wstring>&en_relat
     }
 }
 
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Serie::PrintHeader()                                                                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::PrintHeader()
+{
+    if (affichage_titre_actif)
+    {
+        std::wstring titres_str;
+        std::wstring annees_str;
+        std::wstring sur_str;
+        std::wstring sj_str;
+        std::wstring temps_str;
+        std::wstring note_str;
+
+        titres_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
+        if (titre.size() > 1)
+            titres_str += keyColor[1] + titre[1] + valuesColor + titre[2];
+        // Année(s)
+        if (affichage_annees_actif)
+        {
+            //annees_str = format_Annees();
+            wchar_t date_string[22];
+            wcsftime(date_string, 15, L"%Y", &Date_Diffusee_a_partir_de[0]);
+            const std::wstring wstr = date_string;
+            annees_str = keyColor[0] + L" [" + valuesColor + wstr;
+            if (D_I > 1)
+            {
+                annees_str += keyColor[1] + L'-' + valuesColor;
+                wcsftime(date_string, 15, L"%Y", &Date_Diffusee_a_partir_de[D_I - 1]);
+                const std::wstring wstr2 = date_string;
+                if (wstr != wstr2)
+                {
+                    annees_str += wstr2;
+                }
+            }
+            annees_str += keyColor[0] + L']' + valuesColor;
+        }
+        // Sur
+        if (affichage_sur_actif && sur != L"" && sur != L"Disney+" && sur != L"Netflix")
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[0] + L')' + valuesColor;
+        }
+        if (affichage_sur_actif && (sur == L"Disney+" || sur == L"Netflix"))
+        {
+            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[1] + L" : " + valuesColor;
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && disney_sj.length() != 0)
+                sur_str += disney_sj;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
+                sur_str += netflix_sj;
+            sur_str += keyColor[0] + L')' + valuesColor;
+        }
+        else
+        {
+            // Disney+ SJ
+            if (affichage_disney_sj_actif && disney_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + disney_sj + keyColor[0] + L')' + valuesColor;
+            // Netflix SJ
+            if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
+                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + netflix_sj + keyColor[0] + L')' + valuesColor;
+        }
+        // La signalétique jeunesse
+        if (affichage_sj_actif && sj.length() != 0)
+            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + sj + keyColor[0] + L')' + valuesColor;
+        if (affichage_temps_actif)
+            temps_str += L' ' + afficher_OK_Temps(Temps, keyColor[0], valuesColor);
+        // Note
+        if (affichage_note_actif)
+            //note_str += calcul_Note_Affichage();
+            note_str += afficher_OK_Note();
+        std::wcout << titres_str << annees_str << sur_str << sj_str << temps_str << note_str << std::endl;
+    }
+}
+
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # PrintNote                                                                                                                                          #
@@ -2807,63 +2900,3 @@ const void Serie::PrintTitre()
 }
 
 
-const void Serie::Print_Header()
-{
-    if (affichage_titre_actif)
-    {
-        std::wstring titres_str;
-        std::wstring annees_str;
-        std::wstring sur_str;
-        std::wstring sj_str;
-        std::wstring temps_str;
-        std::wstring note_str;
-
-        titres_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
-        if (titre.size() > 1)
-            titres_str += keyColor[1] + titre[1] + valuesColor + titre[2];
-        // Année(s)
-        if (affichage_annees_actif)
-        {
-            //annees_str = format_Annees();
-            wchar_t date_string[22];
-            wcsftime(date_string, 15, L"%Y", &Date_Diffusee_a_partir_de[0]);
-            std::wstring wstr = date_string;
-            annees_str = keyColor[0] + L" (" + valuesColor + wstr + keyColor[0] + L')' + valuesColor;
-        }
-        // Sur
-        if (affichage_sur_actif && sur != L"" &&  sur != L"Disney+" && sur != L"Netflix")
-        {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[0] + L')' + valuesColor;
-        }
-        if (affichage_sur_actif && (sur == L"Disney+" || sur == L"Netflix"))
-        {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[1] + L" : " + valuesColor;
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && disney_sj.length() != 0)
-                sur_str += disney_sj;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
-                sur_str += netflix_sj;
-            sur_str += keyColor[0] + L')' + valuesColor;
-        }
-        else
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && disney_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + disney_sj + keyColor[0] + L')' + valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + netflix_sj + keyColor[0] + L')' + valuesColor;
-        }
-        // La signalétique jeunesse
-        if (affichage_sj_actif && sj.length() != 0)
-            sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + sj + keyColor[0] + L')' + valuesColor;
-        if (affichage_temps_actif)
-            temps_str += L' ' + afficher_OK_Temps(Temps, keyColor[0], valuesColor);
-        // Note
-        if (affichage_note_actif)
-            //note_str += calcul_Note_Affichage();
-            note_str += afficher_OK_Note();
-        std::wcout << titres_str << annees_str << sur_str << sj_str << temps_str << note_str << std::endl;
-    }
-}

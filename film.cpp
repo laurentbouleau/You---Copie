@@ -50,7 +50,7 @@ extern const int Console_Lire_txt(std::wstring, int, int);
 
 //extern std::tm ParseDate(std::wstring& str);
 
-extern void PrintAudiodescription(const std::wstring& ad, bool ad_, std::wstring& titre_T, std::wstring& titre_t);
+extern void PrintAudiodescription(const std::wstring& ad, bool ad_, std::wstring& titre_T, std::wstring& titre_t, int x);
 extern void PrintGenres(const std::vector<std::wstring>& genres, bool genre_, const std::wstring& sous_genre, bool sous_genre_, std::wstring& titre_T, std::wstring& titre_t);
 extern void PrintImages(const std::vector<std::wstring>& images, bool image_, std::wstring& titre_T, std::wstring& titre_t, int x1, int y1, int x2, int y2);
 extern void PrintNationalites(const std::vector<std::wstring>& nationalites, bool nationalite_, std::wstring& titre_T, std::wstring& titre_t);
@@ -867,7 +867,7 @@ const int Film::afficher()
 	// Titre
 	//PrintTitre();
 	// Header
-	Print_Header();
+	PrintHeader();
 	// Date de reprise
 	PrintDatedeReprise();
 	// Date de sortie
@@ -877,7 +877,7 @@ const int Film::afficher()
 	// Distributeur
 	PrintDistributeur();
 	// Audiodescription
-	PrintAudiodescription(audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor);
+	PrintAudiodescription(audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor, 0);
 	// Genre
 	PrintGenres(genre, affichage_genres_actif, sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
 	// De
@@ -1207,7 +1207,7 @@ const void Film::PrintDe(const std::vector<std::wstring>&de)
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # PrintDistributeur                                                                                                                                  #
-// # const void Film::PrintDistributeur()                                                                                     #
+// # const void Film::PrintDistributeur()                                                                                                               #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -1221,6 +1221,129 @@ const void Film::PrintDistributeur()
 		//Console_Lire(distributeur_str, 0, 0);
 		int i = Console_Lire_txt(distributeur_str, 0, 0);
 	}
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # const void Film::Print_Header()                                                                                                                    #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Film::PrintHeader()
+{
+	if (affichage_titre_actif)
+	{
+		/*std::wstring titre_str;
+		std::wstring wstr;
+		bool titre_ = false;
+		titre_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
+		if (titre[2] != L"")
+			titre_str += keyColor[1] + titre[1] + valuesColor + titre[2];
+		if (affichage_date_actif && date.tm_year != 0)
+		{
+			wchar_t date_string[22];
+			wcsftime(date_string, 15, L"%d/%m/%Y", &date);
+			wstr = date_string;
+			titre_str += keyColor[0] + L" (" + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4) + keyColor[0] + L')' + valuesColor;
+		}
+		// Sur
+		if (affichage_genres_actif && sur != L"")
+			titre_str += keyColor[0] + L" (" + valuesColor + sur + keyColor[0] + L')' + valuesColor;
+		// En salle
+		else
+			titre_str += keyColor[0] + L" (" + valuesColor + L"en salle" + keyColor[0] + L')' + valuesColor;
+		// La signalétique jeunesse
+		if (affichage_sj_actif && sj.length() != 0)
+			titre_str += keyColor[0] + L" (" + valuesColor + sj + keyColor[0] + L')' + valuesColor;
+		// Disney+ SJ
+		if (affichage_disney_sj_actif && disney_sj.length() != 0)
+			titre_str += (keyColor[0] + L" [" + valuesColor + disney_sj + keyColor[0] + L']' + valuesColor);
+		// Netflix SJ
+		if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
+			titre_str += keyColor[0] + L" [" + valuesColor + netflix_sj + keyColor[0] + L']' + valuesColor;
+		// Temps
+		if (affichage_temps_actif)
+		{
+			titre_str += L' ';
+			if (temps.tm_hour != 0)
+			{
+				wstr = afficher_Temps_OK();
+				titre_str += wstr;
+			}
+		}
+		// Note
+		wstr = PrintNote();
+		// Prroblème !!!
+		//Console_Lire(titre_str + wstr + L"\r\n", 0, 0);
+		//
+		int i = Console_Lire_txt(titre_str + wstr + L"\r\n", 0, 0);
+		*/
+		std::wstring titres_str;
+		std::wstring date_str;
+		std::wstring sur_str;
+		std::wstring sj_str;
+		std::wstring temps_str;
+		std::wstring note_str;
+
+		titres_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
+		if (titre.size() > 1)
+			titres_str += keyColor[1] + titre[1] + valuesColor + titre[2];
+		// Date
+		if (affichage_date_actif)
+		{
+			//annees_str = format_Annees();
+			wchar_t date_string[22];
+			wcsftime(date_string, 15, L"%d/%m/%Y", &date);
+			std::wstring wstr = date_string;
+			date_str = keyColor[0] + L" (" + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4) + keyColor[0] + L')' + valuesColor;
+		}
+		// sur
+		if (affichage_sur_actif && sur == L"")
+			sur_str += keyColor[0] + L" (" + valuesColor + L"en salle" + keyColor[0] + L')' + valuesColor;
+
+		if (affichage_sur_actif && sur != L"" && sur != L"Disney+" && sur != L"Netflix")
+		{
+			sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[0] + L')' + valuesColor;
+		}
+		if (affichage_sur_actif && (sur == L"Disney+" || sur == L"Netflix"))
+		{
+			sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[1] + L" : " + valuesColor;
+			// Disney+ SJ
+			if (affichage_disney_sj_actif && disney_sj.length() != 0)
+				sur_str += disney_sj;
+			// Netflix SJ
+			if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
+				sur_str += netflix_sj;
+			sur_str += keyColor[0] + L')' + valuesColor;
+		}
+		else
+		{
+			// Disney+ SJ
+			if (affichage_disney_sj_actif && disney_sj.length() != 0)
+				sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + disney_sj + keyColor[0] + L')' + valuesColor;
+			// Netflix SJ
+			if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
+				sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + netflix_sj + keyColor[0] + L')' + valuesColor;
+		}
+		// La signalétique jeunesse
+		if (affichage_sj_actif && sj.length() != 0)
+			sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + sj + keyColor[0] + L')' + valuesColor;
+		if (affichage_temps_actif)
+		{
+			temps_str += L' ';
+			if (temps.tm_hour != 0)
+			{
+				temps_str += afficher_Temps_OK();
+				//titre_str += wstr;
+			}
+		}
+		// Note
+		if (affichage_note_actif)
+			//note_str += calcul_Note_Affichage();
+			note_str += PrintNote();
+		std::wcout << titres_str << date_str << sur_str << sj_str << temps_str << note_str << std::endl;
+	}
+
 }
 
 // ######################################################################################################################################################
@@ -1403,119 +1526,3 @@ const void Film::PrintTitre_sur_4()
 }
 
 
-const void Film::Print_Header()
-{
-	if (affichage_titre_actif)
-	{
-		/*std::wstring titre_str;
-		std::wstring wstr;
-		bool titre_ = false;
-		titre_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
-		if (titre[2] != L"")
-			titre_str += keyColor[1] + titre[1] + valuesColor + titre[2];
-		if (affichage_date_actif && date.tm_year != 0)
-		{
-			wchar_t date_string[22];
-			wcsftime(date_string, 15, L"%d/%m/%Y", &date);
-			wstr = date_string;
-			titre_str += keyColor[0] + L" (" + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4) + keyColor[0] + L')' + valuesColor;
-		}
-		// Sur
-		if (affichage_genres_actif && sur != L"")
-			titre_str += keyColor[0] + L" (" + valuesColor + sur + keyColor[0] + L')' + valuesColor;
-		// En salle
-		else
-			titre_str += keyColor[0] + L" (" + valuesColor + L"en salle" + keyColor[0] + L')' + valuesColor;
-		// La signalétique jeunesse
-		if (affichage_sj_actif && sj.length() != 0)
-			titre_str += keyColor[0] + L" (" + valuesColor + sj + keyColor[0] + L')' + valuesColor;
-		// Disney+ SJ
-		if (affichage_disney_sj_actif && disney_sj.length() != 0)
-			titre_str += (keyColor[0] + L" [" + valuesColor + disney_sj + keyColor[0] + L']' + valuesColor);
-		// Netflix SJ
-		if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
-			titre_str += keyColor[0] + L" [" + valuesColor + netflix_sj + keyColor[0] + L']' + valuesColor;
-		// Temps
-		if (affichage_temps_actif)
-		{
-			titre_str += L' ';
-			if (temps.tm_hour != 0)
-			{
-				wstr = afficher_Temps_OK();
-				titre_str += wstr;
-			}
-		}
-		// Note
-		wstr = PrintNote();
-		// Prroblème !!!
-		//Console_Lire(titre_str + wstr + L"\r\n", 0, 0);
-		//
-		int i = Console_Lire_txt(titre_str + wstr + L"\r\n", 0, 0);
-		*/
-		std::wstring titres_str;
-		std::wstring date_str;
-		std::wstring sur_str;
-		std::wstring sj_str;
-		std::wstring temps_str;
-		std::wstring note_str;
-
-		titres_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
-		if (titre.size() > 1)
-			titres_str += keyColor[1] + titre[1] + valuesColor + titre[2];
-		// Date
-		if (affichage_date_actif)
-		{
-			//annees_str = format_Annees();
-			wchar_t date_string[22];
-			wcsftime(date_string, 15, L"%d/%m/%Y", &date);
-			std::wstring wstr = date_string;
-			date_str = keyColor[0] + L" (" + valuesColor + wstr.substr(0, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(3, 2) + keyColor[0] + L'/' + valuesColor + wstr.substr(6, 4) + keyColor[0] + L')' + valuesColor;
-		}
-		// sur
-		if(affichage_sur_actif && sur == L"")
-			sur_str += keyColor[0] + L" (" + valuesColor + L"en salle" + keyColor[0] + L')' + valuesColor;
-
-		if (affichage_sur_actif && sur != L"" && sur != L"Disney+" && sur != L"Netflix")
-		{
-			sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[0] + L')' + valuesColor;
-		}
-		if (affichage_sur_actif && (sur == L"Disney+" || sur == L"Netflix"))
-		{
-			sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[1] + L" : " + valuesColor;
-			// Disney+ SJ
-			if (affichage_disney_sj_actif && disney_sj.length() != 0)
-				sur_str += disney_sj;
-			// Netflix SJ
-			if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
-				sur_str += netflix_sj;
-			sur_str += keyColor[0] + L')' + valuesColor;
-		}
-		else
-		{
-			// Disney+ SJ
-			if (affichage_disney_sj_actif && disney_sj.length() != 0)
-				sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + disney_sj + keyColor[0] + L')' + valuesColor;
-			// Netflix SJ
-			if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
-				sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + netflix_sj + keyColor[0] + L')' + valuesColor;
-		}
-		// La signalétique jeunesse
-		if (affichage_sj_actif && sj.length() != 0)
-			sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + sj + keyColor[0] + L')' + valuesColor;
-		if (affichage_temps_actif)
-		{
-			temps_str += L' ';
-			if (temps.tm_hour != 0)
-			{
-				temps_str += afficher_Temps_OK();
-				//titre_str += wstr;
-			}
-		}
-		// Note
-		if (affichage_note_actif)
-			//note_str += calcul_Note_Affichage();
-			note_str += PrintNote();
-		std::wcout << titres_str << date_str << sur_str << sj_str << temps_str << note_str << std::endl;
-	}
-
-}

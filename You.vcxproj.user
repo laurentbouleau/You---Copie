@@ -6,14 +6,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LocalDebuggerAmpDefaultAccelerator>{ADEFF70D-84BF-47A1-91C3-FF6B0FC71218}</LocalDebuggerAmpDefaultAccelerator>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>/t s "e:\Séries.[]\+++\D\Dr. STONE.[2019- Crunchyroll].Manga"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>/t s "e:\Séries.[]\Tracker.[2024-]"</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommandArguments>/t s "e:\Séries.[]\+++\D\Dr. STONE.[2019- Crunchyroll].Manga</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LocalDebuggerCommandArguments>/t s "e:\Séries.[]\+++\D\Dr. STONE.[2019- Crunchyroll].Manga"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>/t s "e:\Séries.[]\Tracker.[2024-]"</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
