@@ -1341,7 +1341,8 @@ const void Film::PrintHeader()
 		if (affichage_note_actif)
 			//note_str += calcul_Note_Affichage();
 			note_str += PrintNote();
-		std::wcout << titres_str << date_str << sur_str << sj_str << temps_str << note_str << std::endl;
+		//std::wcout << titres_str << date_str << sur_str << sj_str << temps_str << note_str << std::endl;
+		int i = Console_Lire_txt(titres_str + date_str + sur_str + sj_str + temps_str + note_str + L"\r\n", 0, 0);
 	}
 
 }

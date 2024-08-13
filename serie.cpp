@@ -2625,11 +2625,9 @@ const void Serie::PrintAvec(const std::vector<std::pair<std::wstring, std::wstri
         }
         if (found)
             avec_str += L"...";
-        //int i = Console_Lire_txt(avec_str + L"\r\n", 4, 7);
+        int i = Console_Lire_txt(avec_str + L"\r\n", 4, 7);
         //int i = Console_Lire_txt(avec_str + L"\n", 4, 7);
-
-        //i = Console_Lire_txt(avec_str + L"\r\n", 4, 7);
-        Console_Lire(avec_str + L"\r\n", 4, 7);
+        //Console_Lire(avec_str + L"\r\n", 4, 7);
     }
 }
 
@@ -2787,7 +2785,8 @@ const void Serie::PrintHeader()
         if (affichage_note_actif)
             //note_str += calcul_Note_Affichage();
             note_str += afficher_OK_Note();
-        std::wcout << titres_str << annees_str << sur_str << sj_str << temps_str << note_str << std::endl;
+        //std::wcout << titres_str << annees_str << sur_str << sj_str << temps_str << note_str << std::endl;
+        int i = Console_Lire_txt(titres_str + annees_str + sur_str + sj_str + temps_str + note_str + L"\r\n", 0, 0);
     }
 }
 
