@@ -91,6 +91,8 @@ public:
 
 	const int afficher_pas_de_OK() const;
 	const int afficher(void);
+
+	const void initialiser_Saison(std::wstring&, std::wstring const& nomFichier, int I);
 	//const int Ok_S(bool S_Espace, std::wstring S_MIN, std::wstring S_T, std::wstring S_t, std::wstring S_W, std::wstring S_w);
 	const int Ok_S(bool S_Espace, std::wstring S_MIN, std::vector<std::wstring> S_keyColor, std::wstring S_valuesColor);
 
@@ -129,7 +131,7 @@ private:
 
 	std::vector<std::wstring> titre{};
 	std::vector<std::wstring> titre_original;
-	std::wstring chaine{};
+	std::wstring chaine;
 	std::tm Temps{ 0 };
 	std::vector<std::wstring> genre;
 	std::vector<std::wstring> creee_par;
@@ -141,6 +143,8 @@ private:
 	std::wstring sous_genre{};
 	std::wstring disney_sj;
 	std::wstring netflix_sj;
+	std::wstring paramount_sj;
+
 	std::wstring sj = L"";
 	
 	std::wstring audiodescription = L"";
@@ -161,6 +165,7 @@ private:
 	bool affichage_nationalite_actif = true;
 	bool affichage_netflix_sj_actif = true;
 	bool affichage_note_actif = true;
+	bool affichage_paramount_sj_actif = true;
 	bool affichage_sj_actif = true;
 	bool affichage_sous_genre_actif = true;
 	bool affichage_sur_actif = true;
@@ -172,8 +177,9 @@ private:
 
 	bool Avec_ = true;//false;//
 
-	bool netflix_ok_ou_non = false;
 	bool disney_ok_ou_non = false;
+	bool netflix_ok_ou_non = false;
+	bool paramount_ok_ou_non = false;
 
 	bool en_relation_avec_ = true;//false;
 	//bool Note_ = true;// false;
@@ -201,11 +207,12 @@ private:
 	
 	int D_I = { 0 };
 	int D_J[_X2_] = { 0 };
-bool D_J_[_X2_] = { false }; // D_J == D_J_[_X2_]
+    bool D_J_[_X2_] = { false }; // D_J == D_J_[_X2_]
 	int D_K[_X2_][_X_ * 4] = { -1 };
 	//wchar_t D_K_[_X2_][_X_ * 4] = { L' ' };
 	bool D_K_[_X2_][_X_ * 4] = { false };
 	int D_K_d[_X2_][_X_ * 4] = { 0 };
+	//int D_saisin[_X2_] = { 0 };
 
 	//bool D_Netflix[_X2_] = { false };
 	bool D_DVD[_X2_] = { false };

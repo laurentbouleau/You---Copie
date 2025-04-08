@@ -47,6 +47,7 @@ const void afficher_Nationalite(std::wstring&, std::wstring const&, std::vector<
 const bool afficher_Min(std::wstring&);
 //const int afficher_Nationalite(std::wstring&, std::wstring const&, std::vector<std::wstring>&, std::vector<std::wstring> const&);
 const void afficher_Netflix_SJ(std::wstring&, const std::wstring&, std::wstring&);
+const void afficher_Paramount_SJ(std::wstring& p, std::wstring const& nomFichier, std::wstring& p_sj);
 const void afficher_SJ(std::wstring&, const std::wstring&, std::wstring&);
 //const wstring afficher_SJ(std::wstring);
 const int afficher_Sous_Genre(std::wstring&);

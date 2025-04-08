@@ -41,7 +41,7 @@ extern class Bug B;
 extern const bool afficher_Path_Exists(std::wstring& t);
 extern const int Compare_Path(int rc, path p1, path p2);
 extern const int Console_Lire_txt(std::wstring, int, int);
-extern void PrintStringW(HANDLE hOut, const std::wstring& str);
+//    extern void PrintStringW(HANDLE hOut, const std::wstring& str);
 
 struct Person P;
 
@@ -142,7 +142,7 @@ void init()
     dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
     GetConsoleScreenBufferInfo(hOut, &csbiInfo);
     _wsetlocale(LC_ALL, L"fr");
-    std::locale("fr_FR.utf8");
+//    std::locale("fr_FR.utf8");
     X = csbiInfo.srWindow.Right + 1;
     //
 }
@@ -834,12 +834,26 @@ int wmain(int argc, wchar_t* argv[])
         }
     }
 
+
+
+
+
+
+    //v[3] = L"e:\\Séries.[]\\1883.[2021- Paramount+]";
+    //v[3] = L"e:\\Séries.[]\\Daredevil- Born Again.[2025- Disney+].Mini-série";
+    //v[3] = L"e:\\Séries.[]\\Resident Alien.[2021-]";
+    std::wcout << v[3] << std::endl;
     //
     init();
+
+
+
+
 
     ::B;
     ::P;
     ::E;
+
     //
     //P_cinema;
     //
@@ -850,6 +864,7 @@ int wmain(int argc, wchar_t* argv[])
     {
         return GetLastError();
     }
+    //std::wcout << L"bla" << std::endl;
     //    DWORD dwMode = 0;
     if (!GetConsoleMode(hOut, &dwMode))
     {
@@ -910,11 +925,11 @@ int wmain(int argc, wchar_t* argv[])
 
 
 
-    std::wcout << L"…" << std::endl;
 
 
     i = 0;
-    i = You_txt(i);
+//    i = You_txt(i);
+    std::wcout << L"===> e:\\Séries.[]\\1883.[2021- Paramount+]" << std::endl;
     if (i == 0)
     {
         //P_C = P_cinema;
@@ -929,7 +944,7 @@ int wmain(int argc, wchar_t* argv[])
     }
     i = 0;
 
-
+    std::wcout << L"bla" << std::endl;
 
     /*if (argc > 2)
     {
@@ -943,6 +958,7 @@ int wmain(int argc, wchar_t* argv[])
             //i = You_t(argc, argv);
             i = You_t(v);
         }
+        //std::wcout << L"===> e:\\Séries.[]\\1883.[2021- Paramount+]" << std::endl;
 
     }
     else

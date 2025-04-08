@@ -316,6 +316,8 @@ const int You_txt_OK()
     // Notez qu'une exception s'attrape par référence constante.
     catch (runtime_error const& exception)
     {
+        std::wcout << L"00000===> e:\\Séries.[]\\1883.[2021- Paramount+]" << std::endl;
+
         // On affiche la cause de l'exception.
         std::wcout << L"Erreur : " << exception.what() << std::endl;
     }
@@ -330,6 +332,7 @@ const int You_txt_OK()
     std::wstring t1 = L"", temps = L"";
     while (t != L"")
     {
+        std::wcout << L"00000===> e:\\Séries.[]\\1883.[2021- Paramount+]" << std::endl;
         pos = t.find(L'\n');
         t1 = t.substr(0, pos);
         t1 = you_substr(t1);
@@ -339,6 +342,7 @@ const int You_txt_OK()
             t = t.substr(pos + 1);
             continue;
         }
+        std::wcout << L"11111===> e:\\Séries.[]\\1883.[2021- Paramount+]" << std::endl;
 
         if (t1 == L"<Film>" || t1 == L"<Série>" || t1 == L"<Film DVD>" || t1 == L"<Film VOD>")
         {
@@ -463,5 +467,7 @@ const int You_txt_OK()
     //wcout << L"::You_txt_OK() : Ok !" << endl;
     B.Ok_T(L"const int You_txt_OK() : Ok !");
 #endif
+    std::wcout << L"00000===> e:\\Séries.[]\\1883.[2021- Paramount+]" << std::endl;
+
     return 0;
 }

@@ -108,6 +108,7 @@ private:
 	std::vector<std::wstring> nationalite;
 	std::wstring netflix_sj;
 	double note = 0.0;
+	std::wstring paramount_sj;
 	std::wstring sj;
 	std::vector<std::pair<std::wstring, std::wstring>> m_soundtrack;
 	std::wstring sous_genre;
@@ -133,6 +134,7 @@ private:
 	bool affichage_netflix_sj_actif = true;
 	bool affichage_note_actif = true;
 	bool affichage_par_actif = true;
+	bool affichage_paramount_sj_actif = true;
 	bool affichage_sj_actif = true;
 	bool affichage_soundtraks_actif = true;
 	bool affichage_sous_genre_actif = true;
@@ -141,7 +143,9 @@ private:
 	bool affichage_titre_actif = true;
 	bool affichage_titre_original_actif = true;
 
+	bool disney_ok_ou_non = false;
 	bool netflix_ok_ou_non = false;
+	bool paramount_ok_ou_non = false;
 
 	//bool affichage_date_actif = true;
 

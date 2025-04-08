@@ -528,13 +528,10 @@ const void afficher_Image(const std::wstring& nomFichier, std::vector<std::wstri
     std::size_t pos_txt = nomFichier.find_last_of(L"\\");
 #if afficher_Image_ == true
     B.Ok_T(L"const int Serie::afficher_Image(" + nomFichier + L") :");
-    //B.Ok_W(L"Image={" + i + L'}');
-#endif
+ #endif
     assert((pos_txt != std::wstring::npos) && L"Erreur Image(s) !!!");
     pos_txt++;
     images.push_back(nomFichier.substr(pos_txt));
-
-    //std::wcout << L"image={" << nomFichier << L"}" << std::endl;
 #if afficher_Image_ == true
     //wcout << B_T << L"const int Serie::afficher_Image(" << i << L") : Ok !" << B_t << endl;
     B.Ok_T(L"const int Serie::afficher_Image() : Ok !");
@@ -654,6 +651,35 @@ const void afficher_Netflix_SJ(std::wstring& n, std::wstring const& nomFichier, 
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
+// # const int afficher_Paramount_SJ(std::wstring& p, std::wstring const& _T, std::wstring& P_SJ)                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+// Paramount+.txt
+const void afficher_Paramount_SJ(std::wstring& p, std::wstring const& nomFichier, std::wstring& p_sj)
+{ // Paramount SJ : Catégorie d'âge
+#if	afficher_Netflix_SJ_ == 1
+    B.Ok_T(L"const void afficher_Paramount_SJ(" + n + L", " + nomFichier + L", wstring &n_sj) :");
+#endif
+    assert((n == createdBy_filename) && L"Erreur !!! Paramount SJ... !");
+    p = lire_fichierTxt(nomFichier);
+    try
+    {
+        if (p == L"0+" || p == L"6+" || p == L"12+" || p == L"16+" || p == L"18+")
+        {
+            p_sj = p;
+        }
+    }
+    catch (runtime_error const& exception)
+    {
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+#if	afficher_Paramount_SJ_ == 1
+    B.Ok_T(L"const void afficher_Paramount_SJ() : Ok !");
+#endif
+}
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
 // # SJ                                                       #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
@@ -755,11 +781,6 @@ const int afficher_T123(std::wstring t, std::wstring& t1, std::wstring& t2, std:
 #endif
     std::size_t pos;
     bool t_ = false;
-
-
-
-
-
     //if(t != L"" &&)
     pos = t.find(L" - ");
     if (pos != std::wstring::npos && t_ == false)
@@ -1083,7 +1104,6 @@ const void afficher_Temps_OK(std::wstring& v, bool v_)
 const int afficher_Titre(std::wstring t, std::vector<std::wstring>& titre, bool& titre_)
 {
 #if afficher_Titre_ == 1
-    //wcout << B_T << L"const int ::afficher_Titre(" << t << L", vector<wstring>&titre, bool& titre) :" << B_t << endl;
     B.Ok_T(L"const int afficher_Titre(" + t + L", vector<wstring>&titre, bool& titre) :");
 #endif
     if (titre_ == true)
@@ -1533,7 +1553,7 @@ const int Console_Lire_txt(std::wstring Textes, int x1, int x2)
         {
             n = (int)N;
         }
-        }
+    }
     if (p != 0 && PP.back() <= N)
     {
         std::wcout << P.back() << endl;
@@ -1544,6 +1564,7 @@ const int Console_Lire_txt(std::wstring Textes, int x1, int x2)
 #endif
     return EXIT_SUCCESS;
 }
+
 
 const void Console_Lire(std::wstring wstr, int x1, int x2)
 {
@@ -2318,7 +2339,7 @@ void PrintImages(const std::vector<std::wstring>& images, bool affichage_image_a
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # PrintNationalites                                                                                                                                  #
-// # const void PrintNationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif                                       #                                                                                                    #
+// # const void PrintNationalites(const std::vector<std::wstring>& nationalites, bool affichage_nationalite_actif                                       #
 // #                        std::wstring& keyColor, std::wstring& valuesColor)                                                                          #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################

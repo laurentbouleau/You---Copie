@@ -248,6 +248,12 @@ const int Film::afficher_fichier(std::wstring const& nomFichier, int const& nomI
 				afficher_Par(t, nomFichier, par);
 				return EXIT_SUCCESS;
 			}
+			// Paramount+
+			if (t == L"Paramount+.txt")
+			{
+				afficher_Paramount_SJ(t, nomFichier, paramount_sj);
+				return EXIT_SUCCESS;
+			}
 			// SJ
 			if (t == L"SJ.txt")
 			{
@@ -726,7 +732,7 @@ const void Film::afficher_Soundtrack(std::wstring& s_filename, const std::wstrin
 
 	//for (const auto& [cle, valeur] : clevaleurs) {
 	//	Console::affiche_CleValeur(L"\t" + cle, valeur);
-	assert((s_filename == createdBy_filename) && L"Erreur !!! Soundtrack... !");
+//	assert((s_filename == createdBy_filename) && L"Erreur !!! Soundtrack... !");
 	//par = lire_fichierTxt(nomFichier, { L"\n", L", " });
 	
 	m_soundtrack = lire_paireCleValeur_depuisFichierTxt(nomFichier, L" : ");
@@ -745,7 +751,7 @@ const void Film::afficher_Titre(std::wstring& t_filename, std::wstring const& no
 	std::vector<std::wstring>t = lire_fichierTxt(nomFichier, { L"\n"});
 	std::size_t pos = 0;
 
-	assert(t.size() < 3 L"" && L"Erreur !!! Titre[0]... !");
+//	assert(t.size() < 3 L"" && L"Erreur !!! Titre[0]... !");
 	::afficher_Titre(t[0], titre);
 	titre_ok = t[0];
 	//
@@ -779,7 +785,7 @@ const void Film::afficher_Titre(std::wstring& t_filename, std::wstring const& no
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # pas de OK                                                                                                                                          #
-// # const int Film::afficher_pas_de_OK()                                                                                                             #
+// # const int Film::afficher_pas_de_OK() const                                                                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
@@ -827,7 +833,7 @@ const int Film::afficher_pas_de_OK() const
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # afficher                                                                                                                                           #
-// # const int Film::afficher()                                                                                                                       #
+// # const int Film::afficher()                                                                                                                         #
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 

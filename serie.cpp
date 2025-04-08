@@ -46,6 +46,7 @@ extern const void afficher_Genre(std::wstring&, std::wstring const&, std::vector
 extern const void afficher_Image(const std::wstring& nomFichier, std::vector<std::wstring>& images);
 extern const void afficher_Nationalite(std::wstring&, std::wstring const&, std::vector<std::wstring>&, const std::vector<std::wstring>&);
 extern const void afficher_Netflix_SJ(std::wstring& d, std::wstring const& nomFichier, std::wstring& d_sj);
+extern const void afficher_Paramount_SJ(std::wstring& p, std::wstring const& nomFichier, std::wstring& p_sj);
 
 extern const void afficher_SJ(std::wstring&, const std::wstring&, std::wstring&);
 extern const int afficher_T123(std::wstring t, std::wstring& t1, std::wstring& t2, std::wstring& t3);
@@ -148,13 +149,15 @@ const int Serie::afficher_dossier(std::wstring const& t)
             {
                 sur = t2;
             }
-            if (sur == L"Netflix")
+            if (sur == L"Disney+")
                 netflix_ok_ou_non = true;
-            else if (sur == L"Disney+")
+            else if (sur == L"Netflix")
                 disney_ok_ou_non = true;
+            else if(sur == L"Paramount+")
+                paramount_ok_ou_non = true;
             else
                 ;
-            std::wcout << L"Sur={" << sur << L"}" << std::endl;
+            //std::wcout << L"Sur={" << sur << L"}" << std::endl;
             idx2 = idx3 - 2;
         }
         idx++;
@@ -250,6 +253,7 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
     B.Ok_T(L"const int Serie::afficher_fichier(" + nomFichier + L", " + std::to_wstring(nomImage) + L") : ");
     B.Ok_W(L"{" + nomFichier + L"}");
 #endif
+//    auto extensionFichier = cheminFichier.extension().wstring();
     int i = 0;
     std::size_t pos;
     std::vector <wstring>::iterator iter;
@@ -259,23 +263,6 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
         Ok = nomFichier.substr(0, pos);
     pos++;
     std::wstring t = nomFichier.substr(pos);
-    //if((t == (Titre__ + L".txt")) /* || L"Titre.txt"*/)
-    //{
-    //    wcout << L"rrrr" << endl;
-    //    i = afficher_Titre(t, _T);
-        /*if (t == L"Titre.txt")
-        {
-            wcout << L"www t={" << t << L"} : ok !" << endl;
-            Ok = t;
-        }*/
-        //i ::
-//#if Serie_afficher_1_ == 1
-        //wcout << B_T << L"const int Serie::afficher(1)() : Ok !" << B_t << endl;
-//        B.Ok_T(L"const int Serie::afficher() : Ok !");
-//#endif
-//        return EXIT_SUCCESS;
-//    }
- //   else 
     if (nomImage == TXT_)
     {
         if (std::isdigit(t[0]))
@@ -327,42 +314,6 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
 #endif
                 return EXIT_SUCCESS;
             }
-            // Avec
-            /*if (L"Avec.txt" == t && Avec_ == false)
-            {
-                i = ::afficher_Avec(t, nomFichier, Avec, Avec_role);
-                if (i == -1)
-                {
-#if Serie_afficher_fichier_ == 1
-                    //wcout << L"    " << L"Avec={} : Erreur !!!" << endl;
-                    B.Ok_W(L"Avec={} : Erreur !!!");
-#endif
-                    E.afficher_X(-1, nomFichier, t + L"Avec={} : Erreur !!!");
-                    return EXIT_FAILURE;
-                }
-                //Avec_ = 1;
-                if (Avec_ == false)
-                {
-                    Avec_ = true;
-#if Serie_afficher_fichier_ == 1
-                    //wcout << L"    " << L"Avec={" << t << L"}" << endl;
-                    B.Ok_W(L"Avec={" + t + L"}");
-                    //wcout << B_T << L"const int Serie::afficher(1)() : Ok !" << B_t << endl;
-                    B.Ok_T(L"const int Serie::afficher_fichier() : Ok !");
-#endif
-                    return EXIT_SUCCESS;
-                }
-            }*/
-            // Netflix
-            if (t == L"Netflix.txt")
-            {
-                afficher_Netflix_SJ(t, nomFichier, netflix_sj);
-#if Cinema_afficher_fichier_ == 1
-                B.Ok_W(L"netflix={" + netflix_sj + L'}');
-                B.Ok_T(L"const int Cinema::afficher_fichier() : Ok !");
-#endif
-                return EXIT_SUCCESS;
-            }
             // Chaîne d'origine
             if (t == L"Chaîne d'origine.txt")
             {
@@ -387,6 +338,7 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
             if (t == L"Disney+.txt")
             {
                 afficher_Disney_SJ(t, nomFichier, disney_sj);
+                //std::wcout << L"Disney+ " << disney_sj << std::endl;
                 return EXIT_SUCCESS;
             }
             // En relation avec
@@ -429,6 +381,15 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
                 B.Ok_W(L"netflix={" + netflix_sj + L'}');
                 B.Ok_T(L"const int Cinema::afficher_fichier() : Ok !");
 #endif
+                //std::wcout << L"Netflix " << netflix_sj << std::endl;
+                return EXIT_SUCCESS;
+            }
+            // Paramount+
+            if (t == L"Paramount+.txt")
+            {
+                //std::wcout << L"Paramount+.txt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+                afficher_Paramount_SJ(t, nomFichier, paramount_sj);
+                //std::wcout << L"Paramount+ " << paramount_sj << std::endl;
                 return EXIT_SUCCESS;
             }
             // SJ
@@ -442,7 +403,6 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
                 && affichage_titre_actif)
             {
                 i = afficher_Titre(t, nomFichier);
-                {
 #if Serie_afficher_fichier_ == 1
                     //wcout << L"    " << L"Titre={" << t << L"}" << endl;
                     //wcout << L"    " << L"Titre_=" << Titre_ << endl;
@@ -453,7 +413,6 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
 #endif
                     Ok = t;
                     return EXIT_SUCCESS;
-                }
             }
             // Titre original
             if (t == L"Titre original.txt")
@@ -476,14 +435,7 @@ const int Serie::afficher_fichier(std::wstring const& nomFichier, int const& nom
     {
         //i = afficher_Image(nomFichier, image);
         //afficher_Image(const std::wstring& nomFichier, std::vector<std::wstring>& images);
-
-
-
-
         ::afficher_Image(nomFichier, image);
-
-
-
 #if Serie_afficher_fichier_ == 1
         //wcout << L"    " << L"Image={" << t << L"}" << endl;
         B.Ok_W(L"Image={" + t + L"}");
@@ -510,7 +462,10 @@ ok:
     }
     else
     {
-        std::wcout << L"sss sss sss" << std::endl;
+
+/////////////////////////////////////////////////////////////////////////////////////
+        std::wcout << L"PPPP sss sss sss" << std::endl;
+/////////////////////////////////////////////////////////////////////////////////////
         E.afficher_X(-1, nomFichier, L"Erreur {" + t + L"} !!!");
 #if Serie_afficher_fichier_ == 1
         B.Ok_W(L"Erreur {" + t + L"} !!!");
@@ -619,6 +574,13 @@ const int Serie::afficher_fichier(int I, std::wstring const& nomFichier, int con
             //D_Note_[I] = true;
             return EXIT_SUCCESS;
         }
+        // Saison
+        if (filename == L"Saison.txt")
+        {
+            initialiser_Saison(t, nomFichier, I);
+            //system("PAUSE");
+            return EXIT_SUCCESS;
+        }
         // Titre
         if (filename == L"Titre.txt")
         {
@@ -639,10 +601,7 @@ const int Serie::afficher_fichier(int I, std::wstring const& nomFichier, int con
         // Image
         if (nomImage == JGP_ || nomImage == PNG_ || nomImage == WEBP_)
         {
-            //d_image[I]
-            //i = afficher_Image(I, nomFichier);
             ::afficher_Image(nomFichier, d_image[I]);
-
 #if Serie_afficher_fichier_2_ == 1
             //wcout << L"    " << L"Image={" << t << L"}" << endl;
             B.Ok_W(L"image={" + t + L'}');
@@ -662,6 +621,7 @@ const int Serie::afficher_fichier(int I, std::wstring const& nomFichier, int con
             E.afficher_X(-1, nomFichier, L'{' + t + L".txt} !!!");
             return EXIT_FAILURE;
         }
+        return EXIT_FAILURE;
     }
     else
     {
@@ -745,11 +705,14 @@ const int Serie::afficher_fichier(int I, std::wstring const& nomFichier, int con
             }
             else
             {
-                E.afficher_X(-1, nomFichier, L'[' + t + L".txt] !!!");
-#if Serie_afficher_fichier_2_ == 1
-                B.Ok_T(L"const int Serie::afficher_fichier() : Ok !");
-#endif
-                return EXIT_FAILURE;
+                ::afficher_Image(nomFichier, d_image[I]);
+//                E.afficher_X(-1, nomFichier, L'[' + t + L".txt] !!!");
+//#if Serie_afficher_fichier_2_ == 1
+//                B.Ok_T(L"const int Serie::afficher_fichier() : Ok !");
+//#endif
+//                std::wcout << L"====> Image (4)" << std::endl;
+                return EXIT_SUCCESS;
+                //return EXIT_FAILURE;
             }
         }
 //        D_J_[I] = true;
@@ -909,13 +872,9 @@ const int Serie::afficher_Date(std::wstring d)
         //year = 0;
         //idx = 0;
         if (
-            //(d[0] == L'0' || d[0] == L'1' || d[0] == L'2' || d[0] == L'3' || d[0] == L'4' || d[0] == L'5' || d[0] == L'5' || d[0] == L'6' || d[0] == L'7' || d[0] == L'8' || d[0] == L'9') &&
             std::isdigit(d[0]) &&
-            //(d[1] == L'0' || d[1] == L'1' || d[1] == L'2' || d[1] == L'3' || d[1] == L'4' || d[1] == L'5' || d[1] == L'5' || d[1] == L'6' || d[1] == L'7' || d[1] == L'8' || d[1] == L'9') &&
             std::isdigit(d[1]) &&
-            //(d[2] == L'0' || d[2] == L'1' || d[2] == L'2' || d[2] == L'3' || d[2] == L'4' || d[2] == L'5' || d[2] == L'5' || d[2] == L'6' || d[2] == L'7' || d[2] == L'8' || d[2] == L'9') &&
             isdigit(d[2]) &&
-            //(d[3] == L'0' || d[3] == L'1' || d[3] == L'2' || d[3] == L'3' || d[3] == L'4' || d[3] == L'5' || d[3] == L'5' || d[3] == L'6' || d[3] == L'7' || d[3] == L'8' || d[3] == L'9')
             std::isdigit(d[3])
             )
         {
@@ -979,7 +938,6 @@ const int Serie::afficher_Date(std::wstring d)
 const int Serie::afficher_Diffusee(int& I, std::wstring const& d)
 {
 #if	Serie_afficher_Diffusee_ == 1
-    //wcout << B_T << L"const int Serie_afficher_Diffusee(" << I + 1 << L", " << d << L") :" << B_t << endl;
     B.Ok_T(L"const int Serie_afficher_Diffusee(" + std::to_wstring(I) + L", " + d + L") :");
 #endif
     if (d == L"")
@@ -1010,9 +968,6 @@ stop:
     year = std::stoi(x);
     if (
         (d[0] == L'1' || d[0] == L'2' || d[0] == L'3') &&
-        //(d[1] == L'0' || d[1] == L'1' || d[1] == L'2' || d[1] == L'3' || d[1] == L'4' || d[1] == L'5' || d[1] == L'5' || d[1] == L'6' || d[1] == L'7' || d[1] == L'8' || d[1] == L'9') &&
-        //(d[2] == L'0' || d[2] == L'1' || d[2] == L'2' || d[2] == L'3' || d[2] == L'4' || d[2] == L'5' || d[2] == L'5' || d[2] == L'6' || d[2] == L'7' || d[2] == L'8' || d[2] == L'9') &&
-        //(d[3] == L'0' || d[3] == L'1' || d[3] == L'2' || d[3] == L'3' || d[3] == L'4' || d[3] == L'5' || d[3] == L'5' || d[3] == L'6' || d[3] == L'7' || d[3] == L'8' || d[3] == L'9')
         std::isdigit(d[1]) &&
         std::isdigit(d[2]) &&
         std::isdigit(d[3])
@@ -1311,31 +1266,22 @@ const int Serie::afficher_t123_temps(std::vector<std::wstring>& t, std::wstring&
 // #                                                                                                                                                    #
 // ######################################################################################################################################################
 
-const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
+/*const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
 { // Titre_1
-    //if (Titre_1_ == true)
-    //    return 0;
-
-    //wstring t_
-#if Serie_afficher_Titre_ == 1
-    //wcout << B_T << L"const int Serie::afficher_Titre(" << t << L", " << _T << L") :" << B_t << endl;
-    B.Ok_T(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") :");
-#endif
-    if (titre.begin() == titre.end())
+    std::vector<std::wstring> ti;
+ if (titre.begin() == titre.end())
     {
 #if Serie_afficher_Titre_ == 1
-        //int i;
-        //wcout << L"    " << B_W << L"const int Serie::afficher_Titre(" << t << L", " << _T << L") : erreur !!!" << B_w << endl;
-        B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
-        //wstring wstr;
-        //wstr = B_W;
-        //wstr += L"const int Serie::afficher_Titre(";
-        //i = ::Console_Lire_txt(t + L", " + _T + L") :" + B_w, 0, 0, Y);
+    const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
+{ // Titre_1
+#if Serie_afficher_Titre_ == 1
+    B.Ok_T(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") :");
+#endif
+       B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
 #endif
         E.afficher_X(-1, t, L"Titre.begin() == Titre.end()");
         return EXIT_FAILURE;
     }
-    //Titre_1 = ::afficher_fichier_lire(t, _T);
     try
     {
         // Dans le try, on est assuré que toute exception levée
@@ -1354,10 +1300,10 @@ const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
     std::wstring wstr = L"";
     std::size_t pos = 0;
     pos = Titre_1.find(L'\n');
-    int y = 0;
+    //int y = 0;
+    std::size_t y = 0;
     while (pos != std::wstring::npos)
     {
-        //wcout << L"y=" << y << L" titre[" << y << L"] = [" << Titre_1.substr(0, pos) << L']' << endl;
         ti.push_back(Titre_1.substr(0, pos));
 #if Serie_afficher_Titre_ == 1
         B.Ok_W(L"Titre={" + Titre_1.substr(0, pos) + L'}');
@@ -1369,11 +1315,9 @@ const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
     // Titre[0] + Titre[1] + Titre[2]
     if (affichage_titre_actif && (titre[1] == L" : " || titre[1] == L": " || titre[1] == L"/" || titre[1] == L""))
     {
-        //wcout << L"iiiiii" << endl;
         if (ti[0] == (titre[0] + titre[1] + titre[2] + L"\n"))
         {
             bool titre_ = false;
-            //wcout << L"xxxxxxx" << endl;
             pos = ti[0].find(L" : ");
             if (pos != wstring::npos && titre_ == false)
             {
@@ -1408,7 +1352,6 @@ const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
             if (titre_ == false)
             {
 #if Serie_afficher_Titre_ == 1
-                //wcout << L"    " << B_W << L"const int Serie::afficher_Titre(" << t << L", " << _T << L") : érreur !!!" << B_w << endl;
                 B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
 #endif
                 E.afficher_X(-1, t, L"Titre_={false} !!!");
@@ -1419,32 +1362,24 @@ const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
     else
     {
 #if Serie_afficher_Titre_ == 1
-        //wcout << L"    " << B_W << L"const int Serie::afficher_Titre(" << t << L", " << _T << L") : érreur !!!" << B_w << endl;
-        //wcout << L"yyyyy" << endl;
         B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
-        B.Ok_W(L"yyyyy");
 #endif
         E.afficher_X(-1, nomFichier, t);
         return EXIT_FAILURE;
     }
-    //
-    //wcout << L"ooooooo" << endl;
     if (y == 1)
     {
-        //wcout << L"    " << B_W << L"const int Series::afficher_Titre(" << t << L", " << _T << L") : érreur !!!" << B_w << endl;
         B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
         E.afficher_X(-1, nomFichier, t);
         return EXIT_FAILURE;
     }
     //
-    bool titre_, min_;
-    titre_ = min_ = false;
+    bool titre_ = false;
+    bool min_ = false;;
     int i = 0;
     if (titre_ == false && min_ == false && i == 0)
     {
-        //std::wcout << L"azertyuiop" << std::endl;
-        min_ = ::afficher_Temps(ti[0]);
-//std::wcout << L"azertyuiop" << std::endl;
+    //    min_ = ::afficher_Temps(ti[0]);
         if (min_ == false)
         {
             min_ = ::afficher_Temps(ti[1]);
@@ -1453,7 +1388,6 @@ const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
             else
             {
                 ::afficher_Titre(ti[0], titre);
-                //i = ::afficher_Titre(wstring t, vector<wstring>&titre, bool& titre_);
                 titre_ = true;
                 titre.push_back(ti[1]);
                 min_ = ::afficher_Temps(ti[1]);
@@ -1469,20 +1403,15 @@ const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
                     pos++;
                 }
                 Temps.tm_min = std::stoi(ti[1]);
-                //wcout << L"eee" << endl;
                 if (Temps_ == false)
                     Temps_ = true;
                 ti.erase(ti.begin());
                 ti.erase(ti.begin());
-                //wcout << L"aaa y=" << titre.size() << endl;
             }
         }
         else
         {
-            //wcout << L"qsdfghjklm" << endl;
             titre.push_back(ti[0]);
-            //Temps.tm_hour = stoi(titre[0]);
-            //Temps.tm_min = stoi(titre[0].substr(2));
             Temps.tm_min = stoi(ti[0]);
             if (Temps_ == false)
                 Temps_ = true;
@@ -1494,25 +1423,291 @@ const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
     {
         titre.push_back(L""); // _min
     }
+    y = ti.size();
     for (int j = 0; j < y; j++)
     {
-        //wcout << L"j=" << j << L" wstr=[" << wstr << L']' << endl;
         wstr += ti[j] + L'\n';
     }
     titre.push_back(wstr);
 #if Serie_afficher_Titre_== 1
-    std::vector <std::wstring>::iterator iter;
+    std::vector<std::wstring>::iterator iter;
     for (iter = titre.begin(), i = 0; iter != titre.end(); iter++, i++)
-        //wcout << L"    " << B_W << L"Titre[" << i << L"]={" << *iter << L'}' << B_w << endl;
         B.Ok_W(L"Titre[" + to_wstring(i) + L"]={" + *iter + L'}');
-    //wcout << B_T << L"const int Serie::afficher_Titre() : Ok !" << B_t << endl;
     B.Ok_T(L"const int Serie::afficher_Titre() : Ok !");
-    //i = ::Console_Lire_txt(B_T + L"const int Serie::afficher_Titre() : Ok !" + B_t, 0, 0, Y);
+#endif
+    Titre_1_ = true;
+    return EXIT_SUCCESS;
+}*/
+
+const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
+{ // Titre_1
+    std::vector<std::wstring> ti;
+    if (titre.begin() == titre.end())
+    {
+        E.afficher_X(-1, t, L"Titre.begin() == Titre.end()");
+        return EXIT_FAILURE;
+    }
+    try
+    {
+        // Dans le try, on est assuré que toute exception levée
+        // pourra être traitée dans le bloc catch situé après.
+//        Titre_1 = lire_fichierTxt(nomFichier);
+        ti = lire_fichierTxt(nomFichier, { L"\n" });
+    }
+    // Notez qu'une exception s'attrape par référence constante.
+    catch (runtime_error const& exception)
+    {
+        // On affiche la cause de l'exception.
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+    ti.push_back(L"\n");
+    //
+    std::wstring wstr = L"";
+    std::size_t pos = 0;
+    // Titre[0] + Titre[1] + Titre[2]
+    if (affichage_titre_actif && (titre[1] == L" : " || titre[1] == L": " || titre[1] == L"/" || titre[1] == L""))
+    {
+        if (ti[0] == (titre[0] + titre[1] + titre[2] + L"\n"))
+        {
+            bool titre_ = false;
+            pos = ti[0].find(L" : ");
+            if (pos != wstring::npos && titre_ == false)
+            {
+                titre[0] = ti[0].substr(0, pos);
+                titre[1] = L" : ";
+                titre[2] = t.substr(pos + 3, t.length());
+                titre_ = true;
+            }
+            pos = ti[0].find(L": ");
+            if (pos != wstring::npos && titre_ == false)
+            {
+                titre[0] = ti[0].substr(0, pos);
+                titre[1] = L": ";
+                titre[2] = t.substr(pos + 2, t.length());
+                titre_ = true;
+            }
+            pos = ti[0].find(L"/");
+            if (pos != wstring::npos && titre_ == false)
+            {
+                titre[0] = ti[0].substr(0, pos);
+                titre[1] = L": ";
+                titre[2] = t.substr(pos + 1, t.length());
+                titre_ = true;
+            }
+            else
+            {
+                titre[0] = ti[0];
+                titre[1] = L"";
+                titre[2] = L"";
+                titre_ = true;
+            }
+            if (titre_ == false)
+            {
+                E.afficher_X(-1, t, L"Titre_={false} !!!");
+                return EXIT_FAILURE;
+            }
+        }
+    }
+    else
+    {
+        E.afficher_X(-1, nomFichier, t);
+        return EXIT_FAILURE;
+    }
+    //
+    bool titre_ = false;
+    bool min_ = false;;
+    //int i = 0;
+    ti.erase(ti.begin(), ti.begin() + 1);
+
+    min_ = ::afficher_Temps(ti[0]);
+    Temps.tm_min = std::stoi(ti[0]);
+    ti.erase(ti.begin());
+    std::size_t y = ti.size();
+    for (int j = 0; j < y; j++)
+    {
+        wstr += ti[j] + L'\n';
+    }
+    titre.push_back(wstr);
+#if Serie_afficher_Titre_== 1
+    std::vector<std::wstring>::iterator iter;
+    for (iter = titre.begin(), i = 0; iter != titre.end(); iter++, i++)
+        B.Ok_W(L"Titre[" + to_wstring(i) + L"]={" + *iter + L'}');
+    B.Ok_T(L"const int Serie::afficher_Titre() : Ok !");
 #endif
     Titre_1_ = true;
     return EXIT_SUCCESS;
 }
-
+/*const int Serie::afficher_Titre(std::wstring& t, std::wstring const& nomFichier)
+{ // Titre_1
+    if (titre.begin() == titre.end())
+    {
+#if Serie_afficher_Titre_ == 1
+    const int Serie::afficher_Titre(std::wstring & t, std::wstring const& nomFichier)
+    { // Titre_1
+#if Serie_afficher_Titre_ == 1
+        B.Ok_T(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") :");
+#endif
+        B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
+#endif
+        E.afficher_X(-1, t, L"Titre.begin() == Titre.end()");
+        return EXIT_FAILURE;
+    }
+    try
+    {
+        // Dans le try, on est assuré que toute exception levée
+        // pourra être traitée dans le bloc catch situé après.
+        Titre_1 = lire_fichierTxt(nomFichier);
+    }
+    // Notez qu'une exception s'attrape par référence constante.
+    catch (runtime_error const& exception)
+    {
+        // On affiche la cause de l'exception.
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+    Titre_1 += L'\n';
+    //
+    std::vector<std::wstring> ti;
+    std::wstring wstr = L"";
+    std::size_t pos = 0;
+    pos = Titre_1.find(L'\n');
+    //int y = 0;
+    std::size_t y = 0;
+    while (pos != std::wstring::npos)
+    {
+        ti.push_back(Titre_1.substr(0, pos));
+#if Serie_afficher_Titre_ == 1
+        B.Ok_W(L"Titre={" + Titre_1.substr(0, pos) + L'}');
+#endif
+        Titre_1 = Titre_1.substr(pos + 1);
+        pos = Titre_1.find(L'\n');
+        y++;
+    }
+    // Titre[0] + Titre[1] + Titre[2]
+    if (affichage_titre_actif && (titre[1] == L" : " || titre[1] == L": " || titre[1] == L"/" || titre[1] == L""))
+    {
+        if (ti[0] == (titre[0] + titre[1] + titre[2] + L"\n"))
+        {
+            bool titre_ = false;
+            pos = ti[0].find(L" : ");
+            if (pos != wstring::npos && titre_ == false)
+            {
+                titre[0] = ti[0].substr(0, pos);
+                titre[1] = L" : ";
+                titre[2] = t.substr(pos + 3, t.length());
+                titre_ = true;
+            }
+            pos = ti[0].find(L": ");
+            if (pos != wstring::npos && titre_ == false)
+            {
+                titre[0] = ti[0].substr(0, pos);
+                titre[1] = L": ";
+                titre[2] = t.substr(pos + 2, t.length());
+                titre_ = true;
+            }
+            pos = ti[0].find(L"/");
+            if (pos != wstring::npos && titre_ == false)
+            {
+                titre[0] = ti[0].substr(0, pos);
+                titre[1] = L": ";
+                titre[2] = t.substr(pos + 1, t.length());
+                titre_ = true;
+            }
+            else
+            {
+                titre[0] = ti[0];
+                titre[1] = L"";
+                titre[2] = L"";
+                titre_ = true;
+            }
+            if (titre_ == false)
+            {
+#if Serie_afficher_Titre_ == 1
+                B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
+#endif
+                E.afficher_X(-1, t, L"Titre_={false} !!!");
+                return EXIT_FAILURE;
+            }
+        }
+    }
+    else
+    {
+#if Serie_afficher_Titre_ == 1
+        B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
+#endif
+        E.afficher_X(-1, nomFichier, t);
+        return EXIT_FAILURE;
+    }
+    if (y == 1)
+    {
+        B.Ok_W(L"const int Serie::afficher_Titre(" + t + L", " + nomFichier + L") : erreur !!!");
+        E.afficher_X(-1, nomFichier, t);
+        return EXIT_FAILURE;
+    }
+    //
+    bool titre_ = false;
+    bool min_ = false;;
+    int i = 0;
+    if (titre_ == false && min_ == false && i == 0)
+    {
+        //    min_ = ::afficher_Temps(ti[0]);
+        if (min_ == false)
+        {
+            min_ = ::afficher_Temps(ti[1]);
+            if (min_ == false)
+                titre.push_back(L""); // _h_min
+            else
+            {
+                ::afficher_Titre(ti[0], titre);
+                titre_ = true;
+                titre.push_back(ti[1]);
+                min_ = ::afficher_Temps(ti[1]);
+                if (min_ == false)
+                {
+                    E.afficher_X(-1, ti[1], ti[1] + L" erreur (" + ti[1] + L") !!!");
+                    return -1;
+                }
+                pos = ti[1].find(L' ');
+                while (pos == wstring::npos)
+                {
+                    ti[1] = ti[1].substr(0, pos - 1) + ti[1].substr(pos + 1);
+                    pos++;
+                }
+                Temps.tm_min = std::stoi(ti[1]);
+                if (Temps_ == false)
+                    Temps_ = true;
+                ti.erase(ti.begin());
+                ti.erase(ti.begin());
+            }
+        }
+        else
+        {
+            titre.push_back(ti[0]);
+            Temps.tm_min = stoi(ti[0]);
+            if (Temps_ == false)
+                Temps_ = true;
+            ti.erase(ti.begin());
+            min_ = true;
+        }
+    }
+    else
+    {
+        titre.push_back(L""); // _min
+    }
+    y = ti.size();
+    for (int j = 0; j < y; j++)
+    {
+        wstr += ti[j] + L'\n';
+    }
+    titre.push_back(wstr);
+#if Serie_afficher_Titre_== 1
+    std::vector<std::wstring>::iterator iter;
+    for (iter = titre.begin(), i = 0; iter != titre.end(); iter++, i++)
+        B.Ok_W(L"Titre[" + to_wstring(i) + L"]={" + *iter + L'}');
+    B.Ok_T(L"const int Serie::afficher_Titre() : Ok !");
+#endif
+    Titre_1_ = true;
+    return EXIT_SUCCESS;
+}*/
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
 // # Titre                                                                                                                                              #
@@ -1562,6 +1757,10 @@ const int Serie::afficher_Titre_2(int I, std::wstring t, std::wstring nomFichier
 #endif
     return EXIT_SUCCESS;
 }
+
+
+
+
 
 // ######################################################################################################################################################
 // #                                                                                                                                                    #
@@ -1902,6 +2101,7 @@ stop:
 #endif
         E.afficher_X(-1, nomFichier, L"Erreur D_t[" + std::to_wstring(I) + L"][" + std::to_wstring(J) + L"] !!!");
         return EXIT_FAILURE;
+
     }
 #endif
     wchar_t date_string[15];
@@ -1928,6 +2128,43 @@ stop:
     B.Ok_T(L"const int Serie::afficher_X_x() : Ok !");
 #endif
     return EXIT_SUCCESS;
+}
+
+// ######################################################################################################################################################
+// ######################################################################################################################################################
+
+// ######################################################################################################################################################
+// #                                                                                                                                                    #
+// # initialiser_Saison                                                                                                                                 #
+// # const void Serie::initialiser_Saison(std::wstring& t, std::wstring const& nomFichier, int I)                                                       #
+// #                                                                                                                                                    #
+// ######################################################################################################################################################
+
+const void Serie::initialiser_Saison(std::wstring& t, std::wstring const& nomFichier, int I)
+{
+    //    std::vector<std::wstring> saison = lire_fichierTxt(cheminFichier.wstring(), { L"\n" });
+    //    assert((saison.size() != 0));
+    //    m_nombre_episodes = std::stoi(saison[0]);
+    //    assert((m_nombre_episodes == std::stoi(saison[0])));
+    //    saison.erase(saison.begin());
+    //    m_resume = saison;
+    //    assert((m_resume.size() != 0));
+    std::vector<std::wstring> t2;
+    try
+    {
+        t2 = lire_fichierTxt(nomFichier, { L"\n" });
+    }
+    catch (runtime_error const& exception)
+    {
+        std::wcout << L"Erreur : " << exception.what() << std::endl;
+    }
+    if (t2.size() == 0)
+        ;
+    else
+    {
+        for (auto tt : t2)
+            D_titre[I].push_back(tt);
+    }
 }
 
 // ######################################################################################################################################################
@@ -2042,7 +2279,6 @@ const int Serie::afficher()
     // Audiodescription
     PrintAudiodescription(audiodescription, affichage_audiodescription_actif, keyColor[0], valuesColor, 0);
     // Genre
-//PrintGenres(genres, affichage_genres_actif, sous_genres, affichage_sous_genre_actif, keyColor, valuesColor)
     PrintGenres(genre, affichage_genres_actif, sous_genre, affichage_sous_genre_actif, keyColor[0], valuesColor);
     // Créée par
     PrintCreee_par(creee_par);
@@ -2079,45 +2315,26 @@ const int Serie::afficher()
     PrintNationalites(nationalite, affichage_nationalite_actif, keyColor[0], valuesColor);
     // Image
     PrintImages(image, affichage_image_actif, keyColor[0], valuesColor, 0, 0, 0, 0);
+
+
+
+    // Disney+
     // Netflix ?
     PrintNetflixokounon(netflix_ok_ou_non, affichage_sur_actif, keyColor[0], valuesColor);
+    // Paramount
+
+
+
     //
     Console_Lire_txt(L"~~~~~~~~~~ ");
     // 
-    if (titre.size() == 5/*titre_ == true*/)
-    { // Titre = 4
-        //iter = Titre.begin();
-        //iter += 3;
-        i = Console_Lire_txt(titre[4], 4, 0);
+    if (titre.size() == 4/*titre_ == true*/)
+    { // Titre = 3
+        i = Console_Lire_txt(titre[3], 4, 0);
         Console_Lire_txt(L"~~~~~~~~~~ ");
     }
     // Avec et Avec_role
-    /*if (Avec_ == true && Avec_role.size() != 0)
-    {
-        i = Console_Lire_txt(keyColor + L"Avec :" + valuesColor, 0, 0);
-        Textes = L"";
-        std::wstring& avec = Avec.back();
-        for (j = 0; j < Avec.size(); j++)
-        {
-            if (Avec[j] == avec && avec == L"…" && Avec_role[j] == L"")
-            {
-                Textes += avec;
-                break;
-            }
-            if (Avec[j] != L"" && Avec_role[j] != L"")
-                Textes += Avec[j] + L" " + keyColor2 + L"(" + valueColor2 + Avec_role[j] + keyColor2 + L")" + valueColor2;
-            else if (Avec[j] == L"")
-                Textes += keyColor2 + L"(" + valueColor2 + Avec_role[j] + keyColor2 + L")" + valueColor2;
-            else
-                Textes += Avec[j];
-            if (Avec[j] != avec)
-                Textes += keyColor + L", " + valuesColor;
-            else
-                Textes += keyColor + L'.' + valuesColor;
-        }
-        i = Console_Lire_txt(Textes, 4, 0);
-        Console_Lire_txt(L"---------- ");
-    }*/
+
     //
     // sort https://www-digitalocean-com.translate.goog/community/tutorials/sort-in-c-plus-plus?_x_tr_sl=en&_x_tr_tl=fr&_x_tr_hl=fr&_x_tr_pto=sc
     while (I < D_I)
@@ -2625,8 +2842,8 @@ const void Serie::PrintAvec(const std::vector<std::pair<std::wstring, std::wstri
         }
         if (found)
             avec_str += L"...";
-        int i = Console_Lire_txt(avec_str + L"\r\n", 4, 7);
-        //int i = Console_Lire_txt(avec_str + L"\n", 4, 7);
+//        int i = Console_Lire_txt(avec_str + L"\r\n", 4, 7);
+        int i = Console_Lire_txt(avec_str + L"\n", 4, 7);
         //Console_Lire(avec_str + L"\r\n", 4, 7);
     }
 }
@@ -2646,6 +2863,7 @@ const void Serie::PrintChaine(const std::wstring& chaine)
         //PrintStringW(m_hOut, creee_par_str, 0);
         //PrintStringW(HANDLE hOut, creee_par_str);
         int i = Console_Lire_txt(chaine_str, 0, 0);
+       // Console_Lire(chaine_str, 0, 0);
     }
 }
 
@@ -2721,12 +2939,14 @@ const void Serie::PrintHeader()
 {
     if (affichage_titre_actif)
     {
+        //std::wcout << L"sur=" << sur << L", " << disney_sj << L", " << netflix_sj << L", " << paramount_sj << std::endl;
         std::wstring titres_str;
         std::wstring annees_str;
         std::wstring sur_str;
         std::wstring sj_str;
         std::wstring temps_str;
         std::wstring note_str;
+        std::wstring found_str;
 
         titres_str = keyColor[0] + L"Titre : " + valuesColor + titre[0];
         if (titre.size() > 1)
@@ -2749,33 +2969,40 @@ const void Serie::PrintHeader()
                     annees_str += wstr2;
                 }
             }
-            annees_str += keyColor[0] + L']' + valuesColor;
+            // Sur
+            if (affichage_sur_actif && sur.length() != 0 && sur != L"Disney+" && sur != L"Netflix" && sur != L"Paramount+")
+            {
+                sur_str += keyColor[0] + L' ' + keyColor[1] + L"sur " + valuesColor + sur;// +keyColor[0] + L')' + valuesColor;
+            }
+            else if (affichage_sur_actif && (sur == L"Disney+" || sur == L"Netflix" || sur == L"Paramount+"))
+            {
+                sur_str += keyColor[0] + L' ' + keyColor[1] + L"sur " + valuesColor + sur + keyColor[1] + L" : " + valuesColor;
+                // Disney+ SJ
+                if (affichage_disney_sj_actif && sur == L"Disney+" && disney_sj.length() != 0)
+                    sur_str += disney_sj;
+                // Netflix SJ
+                if (affichage_netflix_sj_actif && sur == L"Netflix" && netflix_sj.length() != 0)
+                    sur_str += netflix_sj;
+                // Paramount+ SJ
+                if (affichage_paramount_sj_actif && sur == L"Paramount+" && paramount_sj.length() != 0)
+                    sur_str += paramount_sj;
+                //sur_str += keyColor[0] + L')' + valuesColor;
+                //found = true;
+            }
+            if (affichage_annees_actif)
+            {
+                annees_str += sur_str + keyColor[0] + L']' + valuesColor;
+            }
         }
-        // Sur
-        if (affichage_sur_actif && sur != L"" && sur != L"Disney+" && sur != L"Netflix")
-        {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[0] + L')' + valuesColor;
-        }
-        if (affichage_sur_actif && (sur == L"Disney+" || sur == L"Netflix"))
-        {
-            sur_str += keyColor[0] + L" (" + keyColor[1] + L"sur " + valuesColor + sur + keyColor[1] + L" : " + valuesColor;
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && disney_sj.length() != 0)
-                sur_str += disney_sj;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
-                sur_str += netflix_sj;
-            sur_str += keyColor[0] + L')' + valuesColor;
-        }
-        else
-        {
-            // Disney+ SJ
-            if (affichage_disney_sj_actif && disney_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + disney_sj + keyColor[0] + L')' + valuesColor;
-            // Netflix SJ
-            if (affichage_netflix_sj_actif && netflix_sj.length() != 0)
-                sur_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + netflix_sj + keyColor[0] + L')' + valuesColor;
-        }
+        // Disney+ SJ
+        if (affichage_disney_sj_actif && sur != L"Disney+" && disney_sj.length() != 0)
+            sj_str += keyColor[0] + L" (" + valuesColor + L"Disney+" + keyColor[1] + L" : " + valuesColor + disney_sj + keyColor[0] + L')' + valuesColor;
+        // Netflix SJ
+        if (affichage_netflix_sj_actif && sur != L"Netflix" && netflix_sj.length() != 0)
+            sj_str += keyColor[0] + L" (" + valuesColor + L"Netflix" + keyColor[1] + L" : " + valuesColor + netflix_sj + keyColor[0] + L')' + valuesColor;
+        // Paramount+ SJ
+        if (affichage_paramount_sj_actif && sur != L"Paramount+" && paramount_sj.length() != 0)
+            sj_str += keyColor[0] + L" (" + valuesColor + L"Paramount+" + keyColor[1] + L" : " + valuesColor + paramount_sj + keyColor[0] + L')' + valuesColor;
         // La signalétique jeunesse
         if (affichage_sj_actif && sj.length() != 0)
             sj_str += keyColor[0] + L" (" + valuesColor + L"SJ" + keyColor[1] + L" : " + valuesColor + sj + keyColor[0] + L')' + valuesColor;
@@ -2786,7 +3013,7 @@ const void Serie::PrintHeader()
             //note_str += calcul_Note_Affichage();
             note_str += afficher_OK_Note();
         //std::wcout << titres_str << annees_str << sur_str << sj_str << temps_str << note_str << std::endl;
-        int i = Console_Lire_txt(titres_str + annees_str + sur_str + sj_str + temps_str + note_str + L"\r\n", 0, 0);
+        int i = Console_Lire_txt(titres_str + annees_str + /*sur_str +*/ sj_str + temps_str + note_str + L"\n"/*L"\r\n"*/, 0, 0);
     }
 }
 
